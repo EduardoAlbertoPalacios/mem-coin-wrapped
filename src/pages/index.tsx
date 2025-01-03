@@ -17,7 +17,6 @@ export default function Home() {
     setLoading(true);
     setError("");
     setStats(null);
-
     try {
       const response = await fetch(`/api/stats?username=${username}`);
       const data = await response.json();
@@ -38,7 +37,31 @@ export default function Home() {
     <main
       className={`min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 ${inter.className}`}
     >
-      <style jsx global>{`
+      <style jsx global> {`
+       @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .text_header_anim {
+    -webkit-animation:name 2s infinite;
+}
+
+@keyframes name {
+    0% {color:magenta;}
+    50% {color:blue;}
+    100%{color:green}
+}
+
+  .animate-fade-in {
+    animation: fade-in 1.5s ease-out forwards;
+  }
         /* Modern scrollbar styling */
         ::-webkit-scrollbar {
           width: 10px;
@@ -53,8 +76,8 @@ export default function Home() {
         ::-webkit-scrollbar-thumb {
           background: linear-gradient(
             to bottom,
-            rgba(214, 188, 250, 0.5),
-            rgba(245, 208, 254, 0.5)
+            rgba(9, 122, 139, 0.5),
+            rgba(65, 185, 122, 0.5)
           );
           border-radius: 8px;
           border: 2px solid rgba(15, 23, 42, 0.1);
@@ -63,8 +86,8 @@ export default function Home() {
         ::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(
             to bottom,
-            rgba(214, 188, 250, 0.8),
-            rgba(245, 208, 254, 0.8)
+            rgba(9, 122, 139, 0.5),
+            rgba(65, 185, 122, 0.5)
           );
         }
 
@@ -84,24 +107,26 @@ export default function Home() {
       ></div>
 
       {/* Header */}
-      <header className="border-b border-gray-700/50 backdrop-blur-sm bg-gray-900/50 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-3">
-          <Image
-            src="https://ph-files.imgix.net/8f799c72-b5f2-48c5-a134-143281cc0502.vnd.microsoft.icon"
-            alt="Git Wrapped Logo"
-            width={40}
-            height={40}
-            className="rounded-lg"
-          />
-          <h1 className="text-2xl font-bold">Git Wrapped API</h1>
+      <header className="border-b border-yellow-300 backdrop-blur-sm bg-yellow-400 sticky top-0 z-50 py-2 flex items-center justify-center">
+        <div>
+          <h1 className="text_header_anim text-2xl font-bold"> Meme Coin API</h1>
         </div>
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-5 gap-8">
+      <div className="w-full px-4 py-12 flex justify-center">
+        <div className="w-1/2">
+          <div className="flex-col gap-8">
             {/* Left Column - Input Form */}
+            <div className="flex justify-center">
+              <Image
+                src="https://ph-files.imgix.net/8f799c72-b5f2-48c5-a134-143281cc0502.vnd.microsoft.icon"
+                alt="Git Wrapped Logo"
+                width={120}
+                height={120}
+                className="rounded-lg"
+              />
+            </div>
             <div className="md:col-span-2 space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="flex flex-col gap-2">
@@ -109,7 +134,7 @@ export default function Home() {
                     htmlFor="username"
                     className="text-sm font-medium text-gray-300"
                   >
-                    GitHub Username
+                    Wallet address
                   </label>
                   <div className="relative">
                     <input
@@ -118,7 +143,7 @@ export default function Home() {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none placeholder-gray-500 backdrop-blur-sm"
-                      placeholder="Enter GitHub username"
+                      placeholder="Enter your Wallet Address"
                       required
                     />
                     <div className="absolute inset-0 -z-10 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-lg blur opacity-20"></div>
@@ -127,7 +152,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium py-3 px-4 rounded-lg transition-all disabled:opacity-50 transform hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-600 hover:to-green-600 text-white font-medium py-3 px-4 rounded-lg transition-all disabled:opacity-50 transform hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -150,75 +175,18 @@ export default function Home() {
                       Loading...
                     </span>
                   ) : (
-                    "Get Stats"
+                    "Check now!"
                   )}
                 </button>
+                <div className="flex justify-center">
+                  <h1 className="text-2xl font-bold animate-fade-in py-24">Check the statistics of all your meme coins!</h1>
+                </div>
               </form>
 
               {/* Error Message */}
               {error && (
                 <div className="bg-red-900/20 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg backdrop-blur-sm">
                   {error}
-                </div>
-              )}
-            </div>
-
-            {/* Right Column - Results */}
-            <div className="md:col-span-3 relative min-h-[400px] flex items-center justify-center">
-              {!stats && !loading && (
-                <div className="w-full h-full text-center flex items-center justify-center bg-gray-800/30 border border-purple-500/20 rounded-lg backdrop-blur-sm">
-                  <div className="space-y-4 p-8">
-                    <div className="w-16 h-16 mx-auto bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center">
-                      <svg
-                        className="w-8 h-8 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-200 mb-1">
-                        No Stats Found
-                      </h3>
-                      <p className="text-gray-400">
-                        Enter a GitHub username to view API response
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {stats && (
-                <div className="w-full h-full bg-gray-800/30 border border-purple-500/20 rounded-lg backdrop-blur-sm">
-                  <div className="p-4 border-b border-purple-500/20">
-                    <h2 className="text-lg font-medium text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-200">
-                      Results for @{username}
-                    </h2>
-                  </div>
-                  <div className="p-4 overflow-auto max-h-[600px] rounded-lg">
-                    <ReactJson
-                      src={stats}
-                      theme="tomorrow"
-                      style={{
-                        backgroundColor: "transparent",
-                        fontFamily:
-                          'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                        fontSize: "0.875rem",
-                      }}
-                      enableClipboard={false}
-                      displayDataTypes={false}
-                      displayObjectSize={false}
-                      collapsed={1}
-                      name={false}
-                    />
-                  </div>
                 </div>
               )}
             </div>
